@@ -5,12 +5,13 @@ import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 const ImageGallery = ({ images, onClick }) => {
   return (
     <ul className={css.gallery}>
-      {images.map(({ id, webformatURL, largeImageURL }) => {
+      {images.map(({ id, webformatURL, largeImageURL, tags }) => {
         return (
           <ImageGalleryItem
             key={id}
             webformatURL={webformatURL}
             largeImageURL={largeImageURL}
+            tags={tags}
             onClick={onClick}
           />
         );
@@ -24,6 +25,7 @@ ImageGallery.propTypes = {
   webformatURL: PropTypes.string,
   largeImageURL: PropTypes.string,
   id: PropTypes.number,
+  tags: PropTypes.string,
   onClick: PropTypes.func,
 };
 

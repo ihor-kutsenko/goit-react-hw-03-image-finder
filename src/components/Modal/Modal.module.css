@@ -7,10 +7,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 102;
 }
 .modal {
+  position: relative;
   max-width: calc(100vw - 48px);
   max-height: calc(100vh - 24px);
+}
+.img {
+  border-radius: 30px;
+}
+
+.description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 12px 24px;
+  color: white;
+  font-size: 16px;
+  background-color: rgba(200, 200, 92, 0.3);
+  border-radius: 0px 0px 24px 24px;
+  margin: 0;
 }

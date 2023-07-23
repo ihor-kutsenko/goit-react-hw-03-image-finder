@@ -21,6 +21,7 @@ export class App extends Component {
     showLoadMoreBtn: false,
     modalOpen: false,
     largeImageURL: '',
+    imageTags: null,
     total: 0,
   };
 
@@ -99,10 +100,12 @@ export class App extends Component {
     }));
   };
 
-  openModal = largeImageURL => {
+  openModal = (largeImageURL, imageTags) => {
     this.setState({
       modalOpen: true,
       largeImageURL,
+      imageTags,
+      isLoading: true,
     });
   };
 
@@ -110,6 +113,7 @@ export class App extends Component {
     this.setState({
       modalOpen: false,
       largeImageURL: '',
+      isLoading: false,
     });
   };
 
@@ -121,6 +125,7 @@ export class App extends Component {
       error,
       largeImageURL,
       modalOpen,
+      imageTags,
     } = this.state;
     return (
       <>
@@ -132,7 +137,11 @@ export class App extends Component {
           <ImageGallery images={images} onClick={this.openModal} />
           {showLoadMoreBtn && <LoadMoreBtn onLoadMore={this.onLoadMore} />}
           {modalOpen && (
-            <Modal onClose={this.closeModal} src={largeImageURL}></Modal>
+            <Modal
+              src={largeImageURL}
+              alt={imageTags}
+              onClose={this.closeModal}
+            ></Modal>
           )}
         </Container>
         <ToastContainer />
