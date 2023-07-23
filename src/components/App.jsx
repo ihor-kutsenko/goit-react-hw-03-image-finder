@@ -9,6 +9,7 @@ import fetchImages from 'services/pixabayApi';
 import StartText from './StartText/StartText';
 import Loader from './Loader/Loader';
 import LoadMoreBtn from './Button/Button';
+import Modal from './Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -98,18 +99,41 @@ export class App extends Component {
     }));
   };
 
+  openModal = largeImageURL => {
+    this.setState({
+      modalOpen: true,
+      largeImageURL,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      modalOpen: false,
+      largeImageURL: '',
+    });
+  };
+
   render() {
-    const { images, isLoading, showLoadMoreBtn } = this.state;
+    const {
+      images,
+      isLoading,
+      showLoadMoreBtn,
+      error,
+      largeImageURL,
+      modalOpen,
+    } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.onFormSearh} />
         {images.length === 0 && <StartText />}
-        {this.state.error &&
-          toast.error('Please try again later!', notifyOptions)}
+        {error && toast.error('Please try again later!', notifyOptions)}
         <Container>
           {isLoading && <Loader />}
-          <ImageGallery images={images} />
+          <ImageGallery images={images} onClick={this.openModal} />
           {showLoadMoreBtn && <LoadMoreBtn onLoadMore={this.onLoadMore} />}
+          {modalOpen && (
+            <Modal onClose={this.closeModal} src={largeImageURL}></Modal>
+          )}
         </Container>
         <ToastContainer />
       </>

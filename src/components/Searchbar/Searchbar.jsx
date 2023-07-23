@@ -33,8 +33,8 @@ export default class Searchbar extends Component {
             className={css.input}
             name="query"
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
             onChange={this.onInputChange}
             value={this.state.query}
@@ -54,5 +54,3 @@ Searchbar.propTypes = {
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
 };
-
-// export default Searchbar;
