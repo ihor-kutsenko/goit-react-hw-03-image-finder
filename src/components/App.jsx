@@ -23,6 +23,7 @@ export class App extends Component {
     largeImageURL: '',
     imageTags: null,
     total: 0,
+    perPage: 12,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,12 +39,11 @@ export class App extends Component {
   }
 
   async searchImages() {
-    const { query, page } = this.state;
+    const { query, page, perPage } = this.state;
 
     this.setState({ isLoading: true });
     try {
-      const data = await fetchImages(query, page);
-      const nextPages = data.totalHits - 12 * page;
+      const data = await fetchImages(query, page, perPage);
 
       if (data.hits.length === 0) {
         this.setState({ showLoadMoreBtn: false });
@@ -62,18 +62,15 @@ export class App extends Component {
           `Hooray! We found ${data.totalHits} images.`,
           notifyOptions
         );
-
-        if (data.totalHits < 12) {
-          this.setState({ showLoadMoreBtn: false });
-          toast.info(
-            "We're sorry, but you've reached the end of search results.",
-            notifyOptions
-          );
-        }
-
-        nextPages > 0
-          ? this.setState({ showLoadMoreBtn: true })
-          : this.setState({ showLoadMoreBtn: false });
+      }
+      if (data.hits.length < perPage) {
+        this.setState({ showLoadMoreBtn: false });
+        toast.info(
+          "We're sorry, but you've reached the end of search results.",
+          notifyOptions
+        );
+      } else {
+        this.setState({ showLoadMoreBtn: true });
       }
     } catch (error) {
       this.setState({ error });
@@ -95,9 +92,20 @@ export class App extends Component {
   };
 
   onLoadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+    this.setState(
+      prevState => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        if (this.state.images.length < this.state.perPage) {
+          this.setState({ showLoadMoreBtn: false });
+          toast.info(
+            "We're sorry, but you've reached the end of search results.",
+            notifyOptions
+          );
+        }
+      }
+    );
   };
 
   openModal = (largeImageURL, imageTags) => {
